@@ -14,7 +14,7 @@ Tests for the comments plugin.
 from Pyblosxom.tests import PluginTest, FrozenTime, TIMESTAMP
 from Pyblosxom.plugins import comments
 
-import cgi
+import html
 import pickle
 import os
 
@@ -89,12 +89,12 @@ class TestComments(PluginTest):
         expected_lines = [
             '<?xml version="1.0" encoding="%s"?>\n' % encoding,
             '<item>\n',
-            '<description>%s</description>\n' % cgi.escape(expected_body),
+            '<description>%s</description>\n' % html.escape(expected_body),
             '<pubDate>%0.1f</pubDate>\n' % self.timestamp,
-            '<author>%s</author>\n' % cgi.escape(expected_author),
-            '<title>%s</title>\n' % cgi.escape(expected_title),
+            '<author>%s</author>\n' % html.escape(expected_author),
+            '<title>%s</title>\n' % html.escape(expected_title),
             '<source></source>\n',
-            '<link>%s</link>\n' % cgi.escape(expected_url),
+            '<link>%s</link>\n' % html.escape(expected_url),
             '<w3cdate>%s</w3cdate>\n' % self.timestamp_w3c,
             '<date>%s</date>\n' % self.timestamp_date,
             '<ipaddress>%s</ipaddress>\n' % ipaddress,

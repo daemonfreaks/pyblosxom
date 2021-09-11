@@ -1053,7 +1053,7 @@ def cb_prepare(args):
     # check to see if they have "showcomments=yes" in the querystring
     qstr = py_http.get('QUERY_STRING', None)
     if qstr != None:
-        parsed_qs = urllib.parser.parse_qs(qstr)
+        parsed_qs = urllib.parse.parse_qs(qstr)
         if 'showcomments' in parsed_qs:
             if parsed_qs['showcomments'][0] == 'yes':
                 data['display_comment_default'] = True
