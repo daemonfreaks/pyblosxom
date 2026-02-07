@@ -59,7 +59,7 @@ from Pyblosxom import tools
 from xmlrpc.client import Fault
 
 import re
-import sgmllib
+from html.parser import HTMLParser
 import time
 import urllib.request, urllib.parse, urllib.error
 import urllib.parse
@@ -70,7 +70,7 @@ def verify_installation(request):
     return True
 
 
-class parser(sgmllib.SGMLParser):
+class parser(HTMLParser):
     """ Shamelessly grabbed from Sam Ruby
     from http://www.intertwingly.net/code/mombo/pingback.py
     """

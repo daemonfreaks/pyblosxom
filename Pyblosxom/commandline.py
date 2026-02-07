@@ -510,7 +510,7 @@ def command_line_handler(scriptname, argv):
     if len(argv) == 1 or (len(argv) == 2 and argv[1] in ("-h", "--help")):
         parser = build_parser("%prog [command]")
         parser.print_help()
-        print("")
+        print()
         print("Commands:")
         for command_str, _, command_help in handlers:
             print("    %-14s %s" % (command_str, command_help))
