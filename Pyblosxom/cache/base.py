@@ -124,6 +124,13 @@ class BlosxomCacheBase:
         self.load(key)
         return self.isCached()
 
+    def __contains__(self, key):
+        """
+        Implements the 'in' operator for dict-like interface.
+        """
+        self.load(key)
+        return self.isCached()
+
     def keys(self):
         """
         List out a list of keys for the cache, to be overridden by a subclass
