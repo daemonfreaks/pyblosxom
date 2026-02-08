@@ -123,13 +123,13 @@ pages files, so there are no restrictions (security or otherwise).
 For example::
 
    <%
-   print "testing"
+   print("testing")
    %>
 
    <%
    x = { "apple": 5, "banana": 6, "pear": 4 }
    for mem in x.keys():
-      print "<li>%s - %s</li>" % (mem, x[mem])
+      print("<li>%s - %s</li>" % (mem, x[mem]))
    %>
 
 The request object is available in python code blocks.  Reference it
@@ -137,7 +137,7 @@ by ``request``.  Example::
 
    <%
    config = request.get_configuration()
-   print "your datadir is: %s" % config["datadir"]
+   print("your datadir is: %s" % config["datadir"])
    %>
 
 """

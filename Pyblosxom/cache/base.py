@@ -99,7 +99,7 @@ class BlosxomCacheBase:
         Convenience function to make this class look like a dict.
         """
         self.load(key)
-        if not self.has_key(key):
+        if key not in self:
             raise KeyError
         return self.getEntry()
 
@@ -120,6 +120,13 @@ class BlosxomCacheBase:
     def has_key(self, key):
         """
         Convenience function to make this look more like a dict.
+        """
+        self.load(key)
+        return self.isCached()
+
+    def __contains__(self, key):
+        """
+        Implements the 'in' operator for dict-like interface.
         """
         self.load(key)
         return self.isCached()
