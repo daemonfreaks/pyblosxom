@@ -51,11 +51,11 @@ class PyCalendarTest(unittest.TestCase):
 
         old_locale = locale.setlocale(locale.LC_TIME)
         try:
-            locale.setlocale(locale.LC_TIME, "ja_JP.UTF-8")
-        except locale.Error:
-            self.skipTest("ja_JP.UTF-8 locale is not available")
+            try:
+                locale.setlocale(locale.LC_TIME, "ja_JP.UTF-8")
+            except locale.Error:
+                self.skipTest("ja_JP.UTF-8 locale is not available")
 
-        try:
             datadir = self.get_datadir()
             os.makedirs(datadir)
             for name, date in (("sep.txt", (2026, 9, 26, 15, 0, 0, 0, 0, -1)),
