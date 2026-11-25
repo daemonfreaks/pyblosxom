@@ -172,7 +172,10 @@ class PyblCalendar:
             # add an entry for yyyymm so we can figure out next/previous
             year = str(timetuple[0])
             dayzfill = str.zfill(str(timetuple[1]), 2)
-            yearmonth[year + dayzfill] = time.strftime("%b", timetuple)
+            # links use month numbers rather than month names: "%b"
+            # depends on the locale (e.g. " 9\u6708" in ja_JP) and such
+            # urls don't resolve.
+            yearmonth[year + dayzfill] = dayzfill
 
             # if the entry isn't in the year/month we're looking at with
             # the calendar, then we skip to the next one
@@ -180,10 +183,7 @@ class PyblCalendar:
                 continue
 
             # mark the entry because it's one we want to show
-            if config.get("static_monthnumbers"):
-                datepiece = time.strftime("%Y/%m/%d", timetuple)
-            else:
-                datepiece = time.strftime("%Y/%b/%d", timetuple)
+            datepiece = time.strftime("%Y/%m/%d", timetuple)
             self._entries[day] = (baseurl + "/" + datepiece, day)
 
         # Set the first day of the week (Sunday by default)

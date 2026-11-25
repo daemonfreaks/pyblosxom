@@ -41,3 +41,48 @@ class PyCalendarTest(unittest.TestCase):
         cal = data["calendar"]
 
         cal.generate_calendar()
+
+    def test_links_do_not_depend_on_locale(self):
+        """Calendar links must use month numbers so that they resolve
+        whatever the locale is (e.g. "%b" is " 9月" under ja_JP)."""
+        import locale
+        import re
+        import time
+
+        old_locale = locale.setlocale(locale.LC_TIME)
+        try:
+            locale.setlocale(locale.LC_TIME, "ja_JP.UTF-8")
+        except locale.Error:
+            self.skipTest("ja_JP.UTF-8 locale is not available")
+
+        try:
+            datadir = self.get_datadir()
+            os.makedirs(datadir)
+            for name, date in (("sep.txt", (2026, 9, 26, 15, 0, 0, 0, 0, -1)),
+                               ("oct.txt", (2026, 10, 12, 16, 40, 0, 0, 0, -1)),
+                               ("nov.txt", (2026, 11, 3, 12, 0, 0, 0, 0, -1))):
+                path = os.path.join(datadir, name)
+                with open(path, "w") as fp:
+                    fp.write("title\nbody\n")
+                mtime = time.mktime(date)
+                os.utime(path, (mtime, mtime))
+
+            from Pyblosxom.pyblosxom import Request
+            entry = {"timetuple": (2026, 10, 12, 16, 40, 0, 0, 285, 0)}
+            req = Request({"datadir": datadir,
+                           "base_url": "http://example.com/blog"},
+                          {},
+                          {"entry_list": [entry],
+                           "extensions": {"txt": None}})
+            pycalendar.cb_prepare({"request": req})
+
+            cal = req.get_data()["calendar"]
+            cal.generate_calendar()
+
+            hrefs = re.findall(r'href="([^"]*)"', cal._cal)
+            self.assertEqual(sorted(hrefs),
+                             ["http://example.com/blog/2026/09",
+                              "http://example.com/blog/2026/10/12",
+                              "http://example.com/blog/2026/11"])
+        finally:
+            locale.setlocale(locale.LC_TIME, old_locale)
